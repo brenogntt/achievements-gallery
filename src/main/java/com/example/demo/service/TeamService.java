@@ -37,7 +37,7 @@ public class TeamService {
     public Team findTeamById(Long id) {
         Optional<Team> foundTeam = teamRepository.findById(id);
 
-        if(foundTeam.isEmpty()) {
+        if(!foundTeam.isPresent()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Team not found. Id: " + id);
         } else {
             return foundTeam.get();
@@ -78,7 +78,7 @@ public class TeamService {
         List<Team> foundTeams = teamRepositoryCustomImpl.searchTeams(teamName);
 
         if(foundTeams.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "This team was not found. Team: " + teamName);
+            throw new ResponseStatusException(HttpStatus.NO_CONTENT, "This team was not found. Team: " + teamName);
         }
 
         for(Team foundTeam: foundTeams) {
@@ -109,7 +109,7 @@ public class TeamService {
         List<Achievement> foundAchievements = achievementRepositoryCustomImpl.findAllAchievementsByTeamId(teamId);
 
         if(foundAchievements.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Team id " + teamId + " has no achievements.");
+            throw new ResponseStatusException(HttpStatus.NO_CONTENT, "Team id " + teamId + " has no achievements.");
         }
 
         achievements.put("internationals", getInternationalsAchievements(foundAchievements));
